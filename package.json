@@ -34,12 +34,16 @@
     "test": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
-    "prepublishOnly": "pnpm build && pnpm test && pnpm typecheck"
+    "prepublishOnly": "pnpm build && pnpm test && pnpm typecheck",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "packageManager": "pnpm@10.29.3",
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
+    "vitepress": "^1.6.4",
     "vitest": "^4.0.18"
   },
   "publishConfig": {
