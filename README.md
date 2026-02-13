@@ -4,6 +4,8 @@
 [![npm downloads](https://img.shields.io/npm/dm/payload-sanitizer.svg)](https://www.npmjs.com/package/payload-sanitizer)
 [![license](https://img.shields.io/npm/l/payload-sanitizer.svg)](./LICENSE)
 
+[![CI](https://github.com/mohit838/payload-sanitizer/actions/workflows/ci.yml/badge.svg)](https://github.com/mohit838/payload-sanitizer/actions/workflows/ci.yml)
+
 Tiny zero‑dependency sanitizer for JS/TS payloads that removes common junk (empty strings, whitespace-only strings, `null`, `undefined`, optional dash marker, `NaN`) without mutating the original value. Works in both frontend and backend code.
 
 ## Install
