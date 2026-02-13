@@ -1,0 +1,38 @@
+name: "✨ Feature request"
+description: Suggest an idea or enhancement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve payload-sanitizer!
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line description of the feature.
+      placeholder: "Allow custom drop rule per key pattern"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What use case or pain point does this address?
+      placeholder: "Need to drop values for keys ending with _tmp"
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: API shape, behavior, examples.
+      placeholder: |
+        Add option: dropKeysMatching: (keyPath) => boolean
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: "Could preprocess before sanitize, but duplicate logic."
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
