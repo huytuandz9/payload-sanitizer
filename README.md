@@ -45,6 +45,8 @@ console.log(clean);
 // }
 ```
 
+See `examples/` for frontend + backend usage.
+
 ## Why this instead of validation libraries?
 
 Validation libs (e.g., Zod) parse **against a schema**. `payload-sanitizer` just **cleans/normalizes** data with simple rules—no schema required. They pair well:
