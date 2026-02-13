@@ -16,6 +16,16 @@ export type SanitizeOptions = {
   keepKeys?: string[];
   dropKeys?: string[];
   dropValues?: unknown[];
+  /**
+   * Always keep these paths (even if value is droppable).
+   * Supports "a.b.c" or ["a","b","c"].
+   */
+  keepPaths?: Array<string | KeyPath>;
+  /**
+   * Always drop these paths (even if value is meaningful).
+   * Supports "a.b.c" or ["a","b","c"].
+   */
+  dropPaths?: Array<string | KeyPath>;
   shouldDrop?: (value: unknown, keyPath: KeyPath) => boolean;
   /**
    * Drop objects that become empty after sanitizing.
@@ -107,6 +117,31 @@ function hasKey(list: string[] | undefined, key: string): boolean {
   return !!list && list.includes(key);
 }
 
+function toKeyPath(path: string | KeyPath): KeyPath {
+  if (Array.isArray(path)) return path;
+  if (path.trim() === "") return [];
+  return path.split(".").map((seg) => {
+    const n = Number(seg);
+    return Number.isInteger(n) && String(n) === seg ? n : seg;
+  });
+}
+
+function pathEquals(a: KeyPath, b: KeyPath): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+function hasPath(list: Array<string | KeyPath> | undefined, path: KeyPath): boolean {
+  if (!list || list.length === 0) return false;
+  for (const item of list) {
+    if (pathEquals(toKeyPath(item), path)) return true;
+  }
+  return false;
+}
+
 function sanitizeAny(
   input: unknown,
   options: typeof DEFAULT_OPTIONS & SanitizeOptions,
@@ -114,9 +149,16 @@ function sanitizeAny(
 ): unknown {
   const normalized = normalizeValue(input, options);
 
-  if (shouldDropPreset(normalized, options.drop)) return undefined;
-  if (shouldDropExact(normalized, options.dropValues)) return undefined;
-  if (options.shouldDrop?.(normalized, path)) return undefined;
+  // Path-based overrides (highest priority)
+  if (hasPath(options.dropPaths, path)) return undefined;
+
+  const isKeptPath = hasPath(options.keepPaths, path);
+
+  if (!isKeptPath) {
+    if (shouldDropPreset(normalized, options.drop)) return undefined;
+    if (shouldDropExact(normalized, options.dropValues)) return undefined;
+    if (options.shouldDrop?.(normalized, path)) return undefined;
+  }
 
   if (Array.isArray(normalized)) {
     if (!options.cleanArrays) return normalized.slice();

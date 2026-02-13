@@ -53,6 +53,29 @@ describe("sanitize()", () => {
     expect(sanitize(input, { dropKeys: ["password"] })).toEqual({ q: "ok" });
   });
 
+  it("supports keepPaths", () => {
+    const input = { filters: { status: "-", q: "" } };
+
+    const out = sanitize(input, {
+      drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+      keepPaths: ["filters.status"],
+      dropEmptyObjects: true,
+    });
+
+    expect(out).toEqual({ filters: { status: "-" } });
+  });
+
+  it("supports dropPaths", () => {
+    const input = { meta: { debug: true }, q: "ok" };
+
+    const out = sanitize(input, {
+      dropPaths: ["meta.debug"],
+      dropEmptyObjects: true,
+    });
+
+    expect(out).toEqual({ q: "ok" });
+  });
+
   it("drops empty objects when enabled", () => {
     const input = { filters: { status: "-", q: " " }, page: 1 };
     const out = sanitize(input, {

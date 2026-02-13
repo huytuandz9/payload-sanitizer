@@ -73,7 +73,9 @@ Returns a cleaned clone of `payload` (objects and arrays) without mutating the i
 - `dropEmptyObjects` (default `false`): remove objects that become empty after sanitizing.
 - `dropEmptyArrays` (default `false`): remove arrays that become empty after sanitizing.
 - `keepKeys`: key names to always keep even if value looks droppable.
+- `keepPaths`: exact paths to always keep (e.g., `"filters.status"`).
 - `dropKeys`: key names to always remove.
+- `dropPaths`: exact paths to always drop (e.g., `"meta.debug"`).
 - `dropValues`: explicit values to remove (uses `Object.is`).
 - `shouldDrop(value, keyPath)`: custom predicate; return `true` to drop. `keyPath` is an array of keys/indexes from root.
 
@@ -89,6 +91,15 @@ sanitize(payload, {
   drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
   dropEmptyObjects: true,
   dropEmptyArrays: true,
+});
+```
+
+Example with path-based rules:
+
+```ts
+sanitize(payload, {
+  keepPaths: ["filters.status"],
+  dropPaths: ["meta.debug"],
 });
 ```
 
