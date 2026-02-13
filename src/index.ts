@@ -17,6 +17,17 @@ export type SanitizeOptions = {
   dropKeys?: string[];
   dropValues?: unknown[];
   shouldDrop?: (value: unknown, keyPath: KeyPath) => boolean;
+  /**
+   * Drop objects that become empty after sanitizing.
+   * Default: false
+   */
+  dropEmptyObjects?: boolean;
+
+  /**
+   * Drop arrays that become empty after sanitizing.
+   * Default: false
+   */
+  dropEmptyArrays?: boolean;
 };
 
 const DEFAULT_DROP: DropPreset[] = [
@@ -26,14 +37,23 @@ const DEFAULT_DROP: DropPreset[] = [
   "whitespaceString",
 ];
 
-const DEFAULT_OPTIONS: Required<
-  Pick<SanitizeOptions, "deep" | "trimStrings" | "cleanArrays">
-> & { drop: DropPreset[] } = {
+const DEFAULT_OPTIONS = {
   deep: true,
   trimStrings: true,
   cleanArrays: true,
+  dropEmptyObjects: false,
+  dropEmptyArrays: false,
   drop: DEFAULT_DROP,
-};
+} satisfies Required<
+  Pick<
+    SanitizeOptions,
+    | "deep"
+    | "trimStrings"
+    | "cleanArrays"
+    | "dropEmptyObjects"
+    | "dropEmptyArrays"
+  >
+> & { drop: DropPreset[] };
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   if (value === null || typeof value !== "object") return false;
@@ -41,10 +61,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return proto === Object.prototype || proto === null;
 }
 
-function normalizeValue(
-  value: unknown,
-  opts: Required<typeof DEFAULT_OPTIONS>,
-) {
+function normalizeValue(value: unknown, opts: typeof DEFAULT_OPTIONS) {
   if (typeof value === "string" && opts.trimStrings) {
     return value.trim();
   }
@@ -92,7 +109,7 @@ function hasKey(list: string[] | undefined, key: string): boolean {
 
 function sanitizeAny(
   input: unknown,
-  options: Required<typeof DEFAULT_OPTIONS> & SanitizeOptions,
+  options: typeof DEFAULT_OPTIONS & SanitizeOptions,
   path: KeyPath,
 ): unknown {
   const normalized = normalizeValue(input, options);
@@ -108,6 +125,7 @@ function sanitizeAny(
       const next = sanitizeAny(normalized[i], options, path.concat(i));
       if (next !== undefined) out.push(next);
     }
+    if (options.dropEmptyArrays && out.length === 0) return undefined;
     return out;
   }
 
@@ -123,6 +141,8 @@ function sanitizeAny(
         const next = sanitizeAny(v, options, path.concat(k));
         if (next !== undefined) out[k] = next;
       }
+      if (options.dropEmptyObjects && Object.keys(out).length === 0)
+        return undefined;
       return out;
     }
 
@@ -138,6 +158,8 @@ function sanitizeAny(
       const next = sanitizeAny(v, options, path.concat(k));
       if (next !== undefined) out[k] = next;
     }
+    if (options.dropEmptyObjects && Object.keys(out).length === 0)
+      return undefined;
     return out;
   }
 
@@ -151,7 +173,11 @@ export function sanitize<T>(payload: T, options: SanitizeOptions = {}): T {
     drop: options.drop ?? DEFAULT_OPTIONS.drop,
   };
 
-  const result = sanitizeAny(payload, merged, []);
+  const result = sanitizeAny(
+    payload,
+    merged as typeof DEFAULT_OPTIONS & SanitizeOptions,
+    [],
+  );
 
   if (result === undefined) {
     if (isPlainObject(payload)) return {} as T;

@@ -66,6 +66,8 @@ Returns a cleaned clone of `payload` (objects and arrays) without mutating the i
 - `trimStrings` (default `true`): `value.trim()` on strings before checks.
 - `cleanArrays` (default `true`): sanitize array items and drop ones that should be removed.
 - `drop` (defaults to `["undefined","null","emptyString","whitespaceString"]`): presets to remove. Presets: `"undefined" | "null" | "emptyString" | "whitespaceString" | "dash" | "nan"`.
+- `dropEmptyObjects` (default `false`): remove objects that become empty after sanitizing.
+- `dropEmptyArrays` (default `false`): remove arrays that become empty after sanitizing.
 - `keepKeys`: key names to always keep even if value looks droppable.
 - `dropKeys`: key names to always remove.
 - `dropValues`: explicit values to remove (uses `Object.is`).
@@ -75,6 +77,16 @@ Notes:
 
 - `0`, `false`, and `""` inside `keepKeys` are preserved by design.
 - If everything is dropped, arrays become `[]`, objects become `{}`; primitives are returned as-is.
+
+Example with empty-object/array dropping:
+
+```ts
+sanitize(payload, {
+  drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+  dropEmptyObjects: true,
+  dropEmptyArrays: true,
+});
+```
 
 ### `sanitize.with(baseOptions)`
 

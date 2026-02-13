@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.0
+- Feature: add `dropEmptyObjects` and `dropEmptyArrays` options
+
 ## 0.0.2
 
 - Docs: add badges, add changelog, add engines + repo metadata

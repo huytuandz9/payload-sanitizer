@@ -23,14 +23,18 @@ describe("sanitize()", () => {
   it("cleans nested objects", () => {
     const input = { filters: { status: "-", q: "  " }, page: 1 };
     expect(
-      sanitize(input, { drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"] }),
+      sanitize(input, {
+        drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+      }),
     ).toEqual({ filters: {}, page: 1 });
   });
 
   it("cleans arrays", () => {
     const input = { tags: ["a", "", "  ", "-", "b"] };
     expect(
-      sanitize(input, { drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"] }),
+      sanitize(input, {
+        drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+      }),
     ).toEqual({ tags: ["a", "b"] });
   });
 
@@ -47,5 +51,25 @@ describe("sanitize()", () => {
   it("supports dropKeys", () => {
     const input = { password: "secret", q: "ok" };
     expect(sanitize(input, { dropKeys: ["password"] })).toEqual({ q: "ok" });
+  });
+
+  it("drops empty objects when enabled", () => {
+    const input = { filters: { status: "-", q: " " }, page: 1 };
+    const out = sanitize(input, {
+      drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+      dropEmptyObjects: true,
+    });
+
+    expect(out).toEqual({ page: 1 });
+  });
+
+  it("drops empty arrays when enabled", () => {
+    const input = { tags: ["", " ", "-"] };
+    const out = sanitize(input, {
+      drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+      dropEmptyArrays: true,
+    });
+
+    expect(out).toEqual({});
   });
 });
