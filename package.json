@@ -1,6 +1,6 @@
 {
   "name": "payload-sanitizer",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Tiny zero-dependency payload sanitizer for JS/TS (frontend + backend).",
   "keywords": [
     "sanitize",
