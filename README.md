@@ -1,5 +1,9 @@
 # payload-sanitizer
 
+[![npm version](https://img.shields.io/npm/v/payload-sanitizer.svg)](https://www.npmjs.com/package/payload-sanitizer)
+[![npm downloads](https://img.shields.io/npm/dm/payload-sanitizer.svg)](https://www.npmjs.com/package/payload-sanitizer)
+[![license](https://img.shields.io/npm/l/payload-sanitizer.svg)](./LICENSE)
+
 Tiny zero‑dependency sanitizer for JS/TS payloads that removes common junk (empty strings, whitespace-only strings, `null`, `undefined`, optional dash marker, `NaN`) without mutating the original value. Works in both frontend and backend code.
 
 ## Install
@@ -57,6 +61,7 @@ const parsed = schema.parse(cleaned);
 Returns a cleaned clone of `payload` (objects and arrays) without mutating the input.
 
 **Options**
+
 - `deep` (default `true`): recurse into nested objects.
 - `trimStrings` (default `true`): `value.trim()` on strings before checks.
 - `cleanArrays` (default `true`): sanitize array items and drop ones that should be removed.
@@ -67,6 +72,7 @@ Returns a cleaned clone of `payload` (objects and arrays) without mutating the i
 - `shouldDrop(value, keyPath)`: custom predicate; return `true` to drop. `keyPath` is an array of keys/indexes from root.
 
 Notes:
+
 - `0`, `false`, and `""` inside `keepKeys` are preserved by design.
 - If everything is dropped, arrays become `[]`, objects become `{}`; primitives are returned as-is.
 
