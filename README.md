@@ -132,6 +132,15 @@ pnpm test
 pnpm build
 ```
 
+## Contributing
+
+Contributions are welcome!  
+If you have ideas, edge cases, or want to improve performance/docs, please open an issue or PR.
+
+- Read: `CONTRIBUTING.md`
+- Report bugs: GitHub Issues
+- Feature requests: GitHub Issues
+
 ## License
 
 MIT
