@@ -7,6 +7,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
+      { text: "Docs", link: "https://mohit838.github.io/payload-sanitizer/" },
       { text: "npm", link: "https://www.npmjs.com/package/payload-sanitizer" },
     ],
     sidebar: [

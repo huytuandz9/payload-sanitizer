@@ -8,6 +8,8 @@
 
 Tiny zero‑dependency sanitizer for JS/TS payloads that removes common junk (empty strings, whitespace-only strings, `null`, `undefined`, optional dash marker, `NaN`) without mutating the original value. Works in both frontend and backend code.
 
+[Docs](https://mohit838.github.io/payload-sanitizer/) · [npm](https://www.npmjs.com/package/payload-sanitizer)
+
 ## Install
 
 ```bash

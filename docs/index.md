@@ -2,6 +2,8 @@
 
 Tiny zero-dependency payload sanitizer for JS/TS — frontend + backend.
 
+[Docs](https://mohit838.github.io/payload-sanitizer/) · [npm](https://www.npmjs.com/package/payload-sanitizer)
+
 ## Install
 
 ```bash
