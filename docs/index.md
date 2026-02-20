@@ -1,17 +1,14 @@
 # payload-sanitizer
 
-Tiny zero-dependency payload sanitizer for JS/TS — frontend + backend.
-
-[Docs](https://mohit838.github.io/payload-sanitizer/) · [npm](https://www.npmjs.com/package/payload-sanitizer)
+Tiny zero-dependency payload sanitizer for JS/TS.
 
 ## Install
 
 ```bash
 pnpm add payload-sanitizer
-# or npm i payload-sanitizer
 ```
 
-## Quick example
+## Basic Usage
 
 ```ts
 import { sanitize } from "payload-sanitizer";
@@ -20,10 +17,34 @@ const clean = sanitize(
   { q: "  hello ", status: "-", page: 1 },
   { drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"] },
 );
-// -> { q: "hello", page: 1 }
+
+// { q: "hello", page: 1 }
 ```
 
-## Express middleware
+## v0.3.0 Highlights
+
+- debug system (global + per-call)
+- circular reference protection
+- strict option validation
+- utility helpers: `pick`, `omit`, `isEmpty`, `compact`, `diff`, `safeParse`
+- ESM/CJS/IIFE builds for package and CDN usage
+
+## Debug
+
+```ts
+import { configureDebug, sanitize } from "payload-sanitizer";
+
+configureDebug({ debug: true });
+sanitize({ q: " " });
+```
+
+## Utility Helpers
+
+```ts
+import { pick, omit, isEmpty, compact, diff, safeParse } from "payload-sanitizer";
+```
+
+## Express Middleware Example
 
 ```ts
 import type { RequestHandler } from "express";
@@ -44,7 +65,4 @@ export const sanitizePayload: RequestHandler = (req, _res, next) => {
   if (req.params && typeof req.params === "object") req.params = sanitize(req.params) as any;
   next();
 };
-
-// Express app
-app.use(sanitizePayload);
 ```

@@ -4,26 +4,17 @@
 [![npm downloads](https://img.shields.io/npm/dm/payload-sanitizer.svg)](https://www.npmjs.com/package/payload-sanitizer)
 [![license](https://img.shields.io/npm/l/payload-sanitizer.svg)](./LICENSE)
 
-[![CI](https://github.com/mohit838/payload-sanitizer/actions/workflows/ci.yml/badge.svg)](https://github.com/mohit838/payload-sanitizer/actions/workflows/ci.yml)
-
-Tiny zero‑dependency sanitizer for JS/TS payloads that removes common junk (empty strings, whitespace-only strings, `null`, `undefined`, optional dash marker, `NaN`) without mutating the original value. Works in both frontend and backend code.
-
-[Docs](https://mohit838.github.io/payload-sanitizer/) · [npm](https://www.npmjs.com/package/payload-sanitizer)
+Tiny zero-dependency sanitizer for JS/TS payloads that removes common junk (`""`, whitespace-only strings, `null`, `undefined`, optional `"-"`, `NaN`) without mutating the original value.
 
 ## Install
 
 ```bash
-# pnpm
 pnpm add payload-sanitizer
-
-# npm
-npm i payload-sanitizer
-
-# yarn
-yarn add payload-sanitizer
+# or npm i payload-sanitizer
+# or yarn add payload-sanitizer
 ```
 
-## Quick start
+## Quick Start
 
 ```ts
 import { sanitize } from "payload-sanitizer";
@@ -34,124 +25,123 @@ const input = {
   fromDate: " 2026-02-01 ",
   toDate: null,
   page: 1,
-  includeInactive: false,
 };
 
 const clean = sanitize(input, {
   drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
 });
 
-console.log(clean);
-// {
-//   fromDate: "2026-02-01",
-//   page: 1,
-//   includeInactive: false
-// }
-```
-
-See `examples/` for frontend + backend usage.
-
-## Why this instead of validation libraries?
-
-Validation libs (e.g., Zod) parse **against a schema**. `payload-sanitizer` just **cleans/normalizes** data with simple rules—no schema required. They pair well:
-
-```ts
-const cleaned = sanitize(formValues);
-const parsed = schema.parse(cleaned);
+// { fromDate: "2026-02-01", page: 1 }
 ```
 
 ## API
 
 ### `sanitize(payload, options?)`
 
-Returns a cleaned clone of `payload` (objects and arrays) without mutating the input.
+Returns a cleaned clone of payload.
 
-**Options**
+Options:
 
 - `deep` (default `true`): recurse into nested objects.
-- `trimStrings` (default `true`): `value.trim()` on strings before checks.
-- `cleanArrays` (default `true`): sanitize array items and drop ones that should be removed.
-- `drop` (defaults to `["undefined","null","emptyString","whitespaceString"]`): presets to remove. Presets: `"undefined" | "null" | "emptyString" | "whitespaceString" | "dash" | "nan"`.
-- `dropEmptyObjects` (default `false`): remove objects that become empty after sanitizing.
-- `dropEmptyArrays` (default `false`): remove arrays that become empty after sanitizing.
-- `keepKeys`: key names to always keep even if value looks droppable.
-- `keepPaths`: exact paths to always keep (e.g., `"filters.status"`).
-- `dropKeys`: key names to always remove.
-- `dropPaths`: exact paths to always drop (e.g., `"meta.debug"`).
-- `dropValues`: explicit values to remove (uses `Object.is`).
-- `shouldDrop(value, keyPath)`: custom predicate; return `true` to drop. `keyPath` is an array of keys/indexes from root.
+- `trimStrings` (default `true`): trim strings before checks.
+- `cleanArrays` (default `true`): sanitize array items and remove dropped values.
+- `drop` (default `["undefined", "null", "emptyString", "whitespaceString"]`): drop presets.
+- `dropEmptyObjects` (default `false`): drop objects that become empty.
+- `dropEmptyArrays` (default `false`): drop arrays that become empty.
+- `keepKeys`, `dropKeys`: key-based keep/drop controls.
+- `keepPaths`, `dropPaths`: exact path-based keep/drop controls.
+- `dropValues`: explicit values to drop (uses `Object.is`).
+- `shouldDrop(value, keyPath)`: custom drop predicate.
+- `strict` (default `false`): validates option shapes and throws on invalid config.
+- `debug` (default `false`): emit debug events.
+- `logger(event)`: custom debug logger.
 
-Notes:
+Drop presets:
 
-- `0`, `false`, and `""` inside `keepKeys` are preserved by design.
-- If everything is dropped, arrays become `[]`, objects become `{}`; primitives are returned as-is.
-
-Example with empty-object/array dropping:
-
-```ts
-sanitize(payload, {
-  drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
-  dropEmptyObjects: true,
-  dropEmptyArrays: true,
-});
-```
-
-Example with path-based rules:
-
-```ts
-sanitize(payload, {
-  keepPaths: ["filters.status"],
-  dropPaths: ["meta.debug"],
-});
-```
+`"undefined" | "null" | "emptyString" | "whitespaceString" | "dash" | "nan"`
 
 ### `sanitize.with(baseOptions)`
 
-Creates a preconfigured sanitizer.
-
-```ts
-const sanitizeSearch = sanitize.with({
-  drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
-});
-
-sanitizeSearch({ q: "  hello ", status: "-" });
-// { q: "hello" }
-```
+Create a reusable sanitizer with base options.
 
 ### `createSanitizer(baseOptions)`
 
-Factory equivalent to `sanitize.with`.
+Factory equivalent of `sanitize.with`.
+
+### `sanitizeWith(baseOptions)`
+
+Alias of `sanitize.with`.
+
+## Debug (Global + Instance)
 
 ```ts
-import { createSanitizer } from "payload-sanitizer";
-const sanitizePayload = createSanitizer({ deep: true });
+import { configureDebug, sanitize } from "payload-sanitizer";
+
+configureDebug({
+  debug: true,
+  logger: (event) => {
+    console.log(event.type, event.path.join("."));
+  },
+});
+
+sanitize({ q: " " });
+
+sanitize(
+  { q: " " },
+  {
+    debug: true,
+    logger: (event) => console.log("instance", event),
+  },
+);
 ```
 
-## Common patterns
+Exports:
 
-- **Frontend forms** — clean before sending:
-  ```ts
-  await api.post("/search", sanitize(values));
-  ```
-- **Backend filters** — strip empty query params:
-  ```ts
-  const filters = sanitize(req.query, { drop: ["dash"] });
-  db.find(filters);
-  ```
-- **Custom rule** — drop empty `filters` objects:
-  ```ts
-  sanitize(payload, {
-    shouldDrop: (value, path) =>
-      path.at(-1) === "filters" &&
-      typeof value === "object" &&
-      value !== null &&
-      Object.keys(value as any).length === 0,
-  });
-  ```
-- **Drop exact values**:
-  ```ts
-  sanitize(data, { dropValues: ["N/A", Number.NaN] });
-  ```
+- `configureDebug(options)`
+- `getDebugOptions()`
+- `resetDebug()`
+
+Debug event types:
+
+`"normalize" | "drop" | "keep" | "empty-object" | "empty-array" | "circular-skip"`
+
+## Circular Reference Safety
+
+Circular references are detected and skipped safely during traversal to avoid infinite recursion.
+
+## Utility APIs
+
+```ts
+import {
+  pick,
+  omit,
+  isEmpty,
+  compact,
+  diff,
+  safeParse,
+} from "payload-sanitizer";
+```
+
+- `pick(obj, keys)`
+- `omit(obj, keys)`
+- `isEmpty(value)`
+- `compact(array)`
+- `diff(before, after)`
+- `safeParse(json, fallback?)`
+
+## CDN (IIFE Global)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/payload-sanitizer@0.3.0/dist/index.global.js"></script>
+<script>
+  const out = PayloadSanitizer.sanitize({ q: "  hello " });
+  console.log(out);
+</script>
+```
+
+Also available via unpkg:
+
+`https://unpkg.com/payload-sanitizer@0.3.0/dist/index.global.js`
 
 ## Development
 
@@ -159,16 +149,8 @@ const sanitizePayload = createSanitizer({ deep: true });
 pnpm install
 pnpm test
 pnpm build
+pnpm typecheck
 ```
-
-## Contributing
-
-Contributions are welcome!  
-If you have ideas, edge cases, or want to improve performance/docs, please open an issue or PR.
-
-- Read: `CONTRIBUTING.md`
-- Report bugs: GitHub Issues
-- Feature requests: GitHub Issues
 
 ## License
 

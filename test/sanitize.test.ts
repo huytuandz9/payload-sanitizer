@@ -1,5 +1,15 @@
-import { describe, expect, it } from "vitest";
-import { sanitize } from "../src/index";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  configureDebug,
+  createSanitizer,
+  resetDebug,
+  sanitize,
+  sanitizeWith,
+} from "../src/index";
+
+afterEach(() => {
+  resetDebug();
+});
 
 describe("sanitize()", () => {
   it("removes undefined/null/empty strings by default", () => {
@@ -94,5 +104,50 @@ describe("sanitize()", () => {
     });
 
     expect(out).toEqual({});
+  });
+
+  it("keeps backward compatibility for sanitize.with", () => {
+    const sanitizeSearch = sanitize.with({
+      drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
+    });
+
+    expect(sanitizeSearch({ q: "  hi ", status: "-" })).toEqual({ q: "hi" });
+  });
+
+  it("supports createSanitizer and sanitizeWith", () => {
+    const one = createSanitizer({ drop: ["undefined", "null", "emptyString"] });
+    const two = sanitizeWith({ drop: ["undefined", "null", "emptyString"] });
+
+    expect(one({ a: "", b: 1 })).toEqual({ b: 1 });
+    expect(two({ a: "", b: 2 })).toEqual({ b: 2 });
+  });
+
+  it("supports instance debug logger", () => {
+    const logger = vi.fn();
+    sanitize({ a: " " }, { debug: true, logger });
+    expect(logger).toHaveBeenCalled();
+  });
+
+  it("supports global debug logger", () => {
+    const logger = vi.fn();
+    configureDebug({ debug: true, logger });
+    sanitize({ a: " " });
+    expect(logger).toHaveBeenCalled();
+  });
+
+  it("supports strict option validation", () => {
+    expect(() =>
+      sanitize({ a: 1 }, { strict: true, drop: "bad" as unknown as never[] }),
+    ).toThrow("`drop` must be an array");
+  });
+
+  it("does not crash on circular references", () => {
+    const a: Record<string, unknown> = { name: "root", empty: " " };
+    const b: Record<string, unknown> = { parent: a };
+    a.child = b;
+
+    const out = sanitize(a);
+    expect(out).toBeDefined();
+    expect((out as Record<string, unknown>).empty).toBeUndefined();
   });
 });

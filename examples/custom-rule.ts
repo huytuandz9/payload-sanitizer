@@ -11,7 +11,11 @@ const payload = {
 const cleaned = sanitize(payload, {
   drop: ["undefined", "null", "emptyString", "whitespaceString", "dash"],
   dropEmptyObjects: true,
-  shouldDrop: (value, path) => path.at(-1) === "range" && typeof value === "object" && value !== null && Object.keys(value as any).length === 0,
+  shouldDrop: (value, path) =>
+    path.at(-1) === "range" &&
+    typeof value === "object" &&
+    value !== null &&
+    Object.keys(value as Record<string, unknown>).length === 0,
 });
 
 console.log(cleaned);
